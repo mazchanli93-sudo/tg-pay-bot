@@ -61,11 +61,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
-    except Exception:
-                await context.bot.send_message(
+        except Exception:
+        name = f"@{user.username}" if user.username else user.first_name
+        await context.bot.send_message(
             chat_id=msg.chat_id,
-            text=f"@{user.username}, чтобы опубликовать сообщение, напишите боту в личку: @Bitminskpaybot"
+            text=f"{name}, чтобы опубликовать сообщение, напишите боту в личку: @Bitminskpaybot"
         )
+
 
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
