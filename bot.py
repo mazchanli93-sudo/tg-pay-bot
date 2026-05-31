@@ -36,4 +36,5 @@ async def check_invoice(invoice_id: int) -> bool:
         items = resp.json()["result"]["items"]
         return bool(items and items[0]["status"] == "paid")
 
-async def handle_message(update: Update, context
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
