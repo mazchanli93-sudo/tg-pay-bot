@@ -40,8 +40,7 @@ async def check_invoice(invoice_id: int) -> bool:
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     user = msg.from_user
-    await context.bot.delete_message(msg.chat_id, msg.message_id)
-    invoice = await create_invoice(user.id)
+        invoice = await create_invoice(user.id)
     invoice_id = invoice["invoice_id"]
     pay_url = invoice["bot_invoice_url"]
     pending_messages[user.id] = {
@@ -61,6 +60,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
+        await context.bot.delete_message(msg.chat_id, msg.message_id)
+
         except Exception:
         name = f"@{user.username}" if user.username else user.first_name
         await context.bot.send_message(
