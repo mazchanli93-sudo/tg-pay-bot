@@ -62,7 +62,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
     except Exception:
-        pass
+                await context.bot.send_message(
+            chat_id=msg.chat_id,
+            text=f"@{user.username}, чтобы опубликовать сообщение, напишите боту в личку: @Bitminskpaybot"
+        )
+
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
