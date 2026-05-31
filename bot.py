@@ -1,4 +1,5 @@
 import logging
+import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 import httpx
@@ -85,20 +86,15 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pending_messages.pop(user_id, None)
         await query.edit_message_text("❌ Публикация отменена.")
 
-def main():
+async def main():
     logging.basicConfig(level=logging.INFO)
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(MessageHandler(filters.TEXT & filters.ChatType.GROUPS & ~filters.COMMAND, handle_message))
     app.add_handler(CallbackQueryHandler(handle_callback))
-    app.run_polling(
-        allowed_updates=["message", "callback_query"],
-        drop_pending_updates=True,
-        close_loop=False,
-        read_timeout=10,
-        write_timeout=10,
-        connect_timeout=10,
-        pool_timeout=10
-    )
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling(allowed_updates=["message", "callback_query"], drop_pending_updates=True)
+    await asyncio.Event().wait()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
