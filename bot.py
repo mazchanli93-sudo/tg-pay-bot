@@ -90,7 +90,8 @@ def main():
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(MessageHandler(filters.TEXT & filters.ChatType.GROUPS & ~filters.COMMAND, handle_message))
     app.add_handler(CallbackQueryHandler(handle_callback))
-    app.run_polling()
+    app.run_polling(allowed_updates=["message", "callback_query"], drop_pending_updates=True)
+
 
 if __name__ == "__main__":
     main()
